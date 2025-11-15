@@ -1,0 +1,13 @@
+#ifndef CART
+#define CART
+
+using namespace std;
+
+class Cart{
+	vector<CartItem> items;
+	Cart();
+	void addItem(Component n, int qty);
+	void removeItem(int componentId);
+	double getCartTotal();
+};
+#endif;

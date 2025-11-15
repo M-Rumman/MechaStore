@@ -1,0 +1,16 @@
+#ifndef ORDER_H
+#define ORDER_H
+
+#include <string>
+
+using namespace std;
+class Order{
+	int id;
+	int userId;
+	vector<OrderItem> items;
+	double total;
+	string customerWhatsapp;
+	Order();
+    double calculateTotal();
+};
+#endif;

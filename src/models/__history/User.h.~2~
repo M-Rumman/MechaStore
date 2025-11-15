@@ -1,0 +1,17 @@
+#ifndef USER_H
+#define USER_H
+
+#include<string>
+using namespace std;
+
+class user{
+	int cmd_id;
+	string username;
+	string password;
+	string whatsapp_no;
+	bool isAdmin;
+	user();
+	void getter();
+	void setter();
+	bool verifyPassword(string input);
+};

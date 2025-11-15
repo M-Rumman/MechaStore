@@ -1,0 +1,23 @@
+#ifndef USER_H
+#define USER_H
+
+#include<string>
+using namespace std;
+
+class User{
+	int cmd_id;
+	string username;
+	string password;
+	string whatsapp_no;
+	bool isAdmin;
+	public:
+	User();
+	User(int id, string username, string password, string whatsapp_no, book isAdmin);
+	const int getId();
+	const string getName();
+	const string getPassword();
+	bool getisAdmin() const;
+	void setWhatsapp();
+	bool verifyPassword(string input) const;
+};
+#endif
