@@ -1,4 +1,5 @@
 #ifndef ORDER_H
+#ifndef ORDER_H
 #define ORDER_H
 
 #include <string>
@@ -16,10 +17,10 @@ private:
     string customerWhatsapp;
 
 public:
-    // Constructor
+    // Constructors
     Order();
 
-    // Calculate total price of all items
+    // Calculate total price from items
     double calculateTotal() const;
 
     // Getters
@@ -29,12 +30,11 @@ public:
     double getTotal() const;
     string getCustomerWhatsapp() const;
 
-    // Operator overloading for sorting
+    // Operator overloading
     bool operator<(const Order &other) const {
         return total < other.total;
     }
 
-    // Pretty printing of an order
     friend ostream& operator<<(ostream &out, const Order &o) {
         out << "Order#" << o.id
             << ", User: " << o.userId
