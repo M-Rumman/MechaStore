@@ -1,0 +1,38 @@
+#ifndef PORTALMANAGER_H
+#define PORTALMANAGER_H
+
+
+#include <vector>
+#include "User.h"
+#include "Customer.h"
+#include "Admin.h"
+#include "Component.h"
+#include "Order.h"
+using namespace std;
+
+
+class PortalManager {
+private:
+vector<User*> users;
+vector<Component> components;
+vector<Order> orders;
+public:
+PortalManager() {}
+
+
+// Users
+void registerUser(User* u);
+User* login(string username, string password);
+
+
+// Components
+vector<Component>& getComponents();
+
+
+// Orders
+void addOrder(const Order &o);
+vector<Order>& getOrders();
+};
+
+
+#endif

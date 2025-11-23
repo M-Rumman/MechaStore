@@ -18,5 +18,3 @@ bool User::getisAdmin() const { return isAdmin; }
 
 void User::setWhatsapp(string whatsapp) { whatsapp_no = whatsapp; }
 bool User::verifyPassword(string input) const { return input == password; }
-
-

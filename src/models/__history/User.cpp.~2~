@@ -1,0 +1,59 @@
+#include "User.h"
+#include <iostream>
+using namespace std;
+
+
+User::User(string username, string password) {
+this->username = username;
+this->password = password;
+}
+
+
+string User::getUsername() const {
+return username;
+}
+
+
+string User::getPassword() const {
+return password;
+}
+
+
+void User::setPassword(string newPass) {
+password = newPass;
+}
+
+
+void User::displayInfo() const {
+cout << "User: " << username << endl;
+}
+
+
+// =============================
+// Customer.cpp
+// =============================
+#include "Customer.h"
+#include <iostream>
+using namespace std;
+
+
+Customer::Customer(string username, string password, int points)
+: User(username, password) {
+this->rewardPoints = points;
+}
+
+
+void Customer::addPoints(int p) {
+rewardPoints += p;
+}
+
+
+int Customer::getPoints() const {
+return rewardPoints;
+}
+
+
+void Customer::displayInfo() const {
+cout << "Customer Username: " << username << endl;
+cout << "Reward Points: " << rewardPoints << endl;
+}

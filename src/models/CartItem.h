@@ -3,12 +3,23 @@
 #include "Component.h"
 using namespace std;
 
+
+class Cart;
+
+
 class CartItem{
-	Component component;
-	int quantity;
-	public:
-	double getTotal() const;
-    CartItem();
-	CartItem(const Component& component, int quantity);
+Component component;
+int quantity;
+public:
+CartItem();
+CartItem(const Component& component, int quantity);
+double getTotal() const;
+
+
+friend class Cart; // Cart can access private members
+friend ostream& operator<<(ostream &out, const CartItem &item){
+out << item.component << " x" << item.quantity << " = $" << item.getTotal();
+return out;
+}
 };
-#endif;
+#endif
