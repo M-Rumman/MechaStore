@@ -5,14 +5,14 @@ using namespace std;
 
 void PortalManager::registerUser(User* u) {
 users.push_back(u);
-cout << "User registered." << endl;
+cout << "User registered (logic only)." << endl;
 }
 
 
 User* PortalManager::login(string username, string password) {
 for(auto u : users){
 if(u->getUserName() == username && u->verifyPassword(password)){
-cout << "Login successful." << endl;
+cout << "Login successful (logic only)." << endl;
 return u;
 }
 }
@@ -26,7 +26,7 @@ vector<Component>& PortalManager::getComponents() { return components; }
 
 void PortalManager::addOrder(const Order &o) {
 orders.push_back(o);
-cout << "Order added." << endl;
+cout << "Order added (logic only)." << endl;
 }
 
 

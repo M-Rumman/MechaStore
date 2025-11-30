@@ -1,0 +1,47 @@
+#ifndef ORDER_H
+#define ORDER_H
+
+#include <string>
+#include <vector>
+#include <iostream>
+#include "OrderItem.h"
+using namespace std;
+
+class Order {
+private:
+    int id;
+    int userId;
+    vector<OrderItem> items;
+    double total;
+    string customerWhatsapp;
+
+public:
+    // Constructor
+    Order();
+
+    // Calculate total price of all items
+    double calculateTotal() const;
+
+    // Getters
+    int getId() const;
+    int getUserId() const;
+    vector<OrderItem> getItems() const;
+    double getTotal() const;
+    string getCustomerWhatsapp() const;
+
+    // Operator overloading for sorting
+    bool operator<(const Order &other) const {
+        return total < other.total;
+    }
+
+    // Pretty printing of an order
+    friend ostream& operator<<(ostream &out, const Order &o) {
+        out << "Order#" << o.id
+            << ", User: " << o.userId
+            << ", Total: $" << o.total;
+        return out;
+    }
+};
+
+#endif
+

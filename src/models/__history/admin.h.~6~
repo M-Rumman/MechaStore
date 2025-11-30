@@ -1,0 +1,44 @@
+#ifndef ADMIN_H
+#define ADMIN_H
+
+
+#include "User.h"
+#include <string>
+#include <vector>
+#include "Component.h"
+#include "Order.h"
+using namespace std;
+
+
+class Admin : public User {
+public:
+    Admin(int uid, const std::string &uname, const std::string &pwd, const std::string &wp)
+        : User(uid, uname, pwd, wp, true) {}  // isAdmin = true
+
+    void addComponent(std::vector<Component> &components, const Component &c) {
+        components.push_back(c);
+    }
+
+    void updateComponent(Component &c, const std::string &newName, double newPrice, int newQty) {
+        c.setName(newName);
+        c.setPrice(newPrice);
+        c.setQuantity(newQty);
+    }
+
+    void deleteComponent(std::vector<Component> &components, int id) {
+        components.erase(std::remove_if(components.begin(), components.end(),
+                                        [id](const Component &c){ return c.getId() == id; }),
+                         components.end());
+    }
+
+    void viewOrders(const std::vector<Order> &orders) {
+        std::cout << "\n--- Orders ---\n";
+        for (const auto &o : orders) {
+            o.showOrder();
+        }
+    }
+
+    virtual ~Admin() {}
+};
+
+#endif

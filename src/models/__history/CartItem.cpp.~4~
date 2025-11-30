@@ -18,13 +18,3 @@ int CartItem::getQuantity() const {
     return quantity;
 }
 
-// Setter for quantity
-void CartItem::setQuantity(int quantity) {
-    this->quantity = quantity;
-}
-
-// Calculate total price
-double CartItem::getTotal() const {
-    return component.getPrice() * quantity;
-}
-

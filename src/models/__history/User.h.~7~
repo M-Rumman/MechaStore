@@ -1,0 +1,29 @@
+#ifndef USER_H
+#define USER_H
+
+#include<string>
+using namespace std;
+
+class User {
+protected:
+    int id;
+    std::string username;
+    std::string password;
+    std::string whatsapp;
+    bool isAdmin;
+
+public:
+    User(int uid, const std::string &uname, const std::string &pwd, const std::string &wp, bool admin = false)
+        : id(uid), username(uname), password(pwd), whatsapp(wp), isAdmin(admin) {}
+
+    virtual ~User() {}  // Virtual destructor makes this class polymorphic
+
+    int getId() const { return id; }
+    std::string getUsername() const { return username; }
+    std::string getPassword() const { return password; }
+    std::string getWhatsapp() const { return whatsapp; }
+
+    virtual bool getisAdmin() const { return isAdmin; }
+};
+
+#endif

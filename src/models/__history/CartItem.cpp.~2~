@@ -1,30 +1,22 @@
 #include "CartItem.h"
 
-// Default constructor
-CartItem::CartItem()
-    : component(), quantity(0) {}
+CartItem::CartItem() : component(), quantity(0) {}
 
-// Parameterized constructor
 CartItem::CartItem(const Component& component, int quantity)
     : component(component), quantity(quantity) {}
 
-// Getter for component
 const Component& CartItem::getComponent() const {
     return component;
 }
 
-// Getter for quantity
 int CartItem::getQuantity() const {
     return quantity;
 }
 
-// Setter for quantity
 void CartItem::setQuantity(int quantity) {
     this->quantity = quantity;
 }
 
-// Calculate total price
 double CartItem::getTotal() const {
     return component.getPrice() * quantity;
 }
-

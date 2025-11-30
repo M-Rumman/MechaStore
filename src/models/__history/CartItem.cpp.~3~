@@ -15,7 +15,8 @@ public:
     int getQuantity() const;
     void setQuantity(int quantity);
 
-    const Component& getComponent() const;
+    // Add this getter to fix Cart.cpp errors
+    const Component& getComponent() const { return component; }
 
     friend class Cart; // Cart can access private members
 
@@ -26,3 +27,4 @@ public:
 };
 
 #endif
+

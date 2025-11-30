@@ -26,7 +26,7 @@ vector<Component>& PortalManager::getComponents() { return components; }
 
 void PortalManager::addOrder(const Order &o) {
 orders.push_back(o);
-cout << "Order added." << endl;
+cout << "Order added (logic only)." << endl;
 }
 
 

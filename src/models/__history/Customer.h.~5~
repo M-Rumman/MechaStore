@@ -1,0 +1,29 @@
+#ifndef CUSTOMER_H
+#define CUSTOMER_H
+
+
+#include "User.h"
+#include "Cart.h"
+#include <string>
+using namespace std;
+
+
+class Customer : public User {
+private:
+    Cart cart;
+
+public:
+    Customer(int uid, const std::string &uname, const std::string &pwd, const std::string &wp)
+        : User(uid, uname, pwd, wp, false) {}  // isAdmin = false
+
+    Cart& getCart() { return cart; }
+
+    void viewCart() {
+        cart.showCart();
+    }
+
+    virtual ~Customer() {}
+};
+
+
+#endif

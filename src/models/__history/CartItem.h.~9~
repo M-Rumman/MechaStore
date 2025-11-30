@@ -15,8 +15,6 @@ public:
     int getQuantity() const;
     void setQuantity(int quantity);
 
-    const Component& getComponent() const;
-
     friend class Cart; // Cart can access private members
 
     friend ostream& operator<<(ostream &out, const CartItem &item) {
