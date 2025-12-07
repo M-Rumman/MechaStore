@@ -14,6 +14,7 @@ const int User::getId() const { return cms_id; }
 const string User::getUserName() const { return username; }
 const string User::getPassword() const { return password; }
 bool User::getisAdmin() const { return isAdmin; }
+string User::getWhatsapp() const{ return whatsapp_no; }
 
 
 void User::setWhatsapp(string whatsapp) { whatsapp_no = whatsapp; }

@@ -1,0 +1,55 @@
+void PortalManager::loadOrders() {
+    ifstream in("orders.txt");
+    if (!in) return;
+
+    orders.clear();
+    string line;
+    Order current;
+    vector<OrderItem> tempItems;
+
+    while (getline(in, line)) {
+
+        if (line == "#") {
+            // finalize order
+            current.setItems(tempItems);
+            current.recalculateTotal();
+            orders.push_back(current);
+            tempItems.clear();
+            continue;
+        }
+
+        // order header
+        if (line.find('|') != string::npos) {
+            tempItems.clear(); // FIX: new order starts, clear items
+
+            stringstream ss(line);
+            string id, userId, phone, total;
+
+            getline(ss, id, '|');
+            getline(ss, userId, '|');
+            getline(ss, phone, '|');
+            getline(ss, total, '|');
+
+            current = Order();
+            current.setId(stoi(id));
+            current.setUserId(stoi(userId));
+            current.setCustomerWhatsapp(phone);
+
+            continue;
+        }
+
+        // order item
+        stringstream ss(line);
+        string id, name, qty, price;
+
+        getline(ss, id, ',');
+        getline(ss, name, ',');
+        getline(ss, qty, ',');
+        getline(ss, price, ';');
+
+        tempItems.push_back(
+            OrderItem(stoi(id), name, stoi(qty), stod(price))
+        );
+    }
+}
+

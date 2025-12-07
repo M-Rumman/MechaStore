@@ -18,6 +18,7 @@ private:
 public:
     // Constructors
     Order();
+    Order(int id, int userId, const vector<OrderItem>& items, const string& customerWhatsapp);
 
     // Calculate total price from items
     double calculateTotal() const;
@@ -28,6 +29,14 @@ public:
     vector<OrderItem> getItems() const;
     double getTotal() const;
     string getCustomerWhatsapp() const;
+    void recalculateTotal();
+
+
+    // Setters (if needed later)
+    void setId(int id);
+    void setUserId(int uid);
+    void setCustomerWhatsapp(const string& w);
+    void setItems(const vector<OrderItem>& its);
 
     // Operator overloading
     bool operator<(const Order &other) const {

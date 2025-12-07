@@ -18,6 +18,7 @@ public:
     virtual ~User() {}  // <--- Added virtual destructor for polymorphism
 
     const int getId() const;
+    string getWhatsapp() const;
     const string getUserName() const;
     const string getPassword() const;
     virtual bool getisAdmin() const;  // make this virtual

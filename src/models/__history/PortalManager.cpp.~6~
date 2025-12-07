@@ -1,0 +1,29 @@
+#include "PortalManager.h"
+#include <algorithm>
+
+void PortalManager::registerUser(User* u) {
+    if (!u) return;
+    users.push_back(u);
+}
+
+User* PortalManager::login(string username, string password) {
+    for (auto u : users) {
+        if (u->getUserName() == username && u->verifyPassword(password)) {
+            return u;
+        }
+    }
+    return nullptr;
+}
+
+vector<Component>& PortalManager::getComponents() {
+    return components;
+}
+
+void PortalManager::addOrder(const Order &o) {
+    orders.push_back(o);
+}
+
+vector<Order>& PortalManager::getOrders() {
+    return orders;
+}
+

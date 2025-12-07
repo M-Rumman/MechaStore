@@ -1,23 +1,26 @@
 #ifndef CARTITEM_H
 #define CARTITEM_H
+
 #include "Component.h"
+#include <iostream>
 using namespace std;
 
 class CartItem {
+private:
     Component component;
     int quantity;
-
 public:
     CartItem();
     CartItem(const Component& component, int quantity);
 
-    double getTotal() const;
-    int getQuantity() const;
-    void setQuantity(int quantity);
-
+    // getters
     const Component& getComponent() const;
+    int getQuantity() const;
 
-    friend class Cart; // Cart can access private members
+    // setters
+    void setQuantity(int qty);
+
+    double getTotal() const;
 
     friend ostream& operator<<(ostream &out, const CartItem &item) {
         out << item.component << " x" << item.quantity << " = $" << item.getTotal();
@@ -26,3 +29,4 @@ public:
 };
 
 #endif
+

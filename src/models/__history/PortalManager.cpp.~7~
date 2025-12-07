@@ -1,0 +1,207 @@
+#include "PortalManager.h"
+#include <algorithm>
+#include <fstream>
+#include <sstream>
+
+// ------------------------------
+//  USER MANAGEMENT
+// ------------------------------
+
+void PortalManager::registerUser(User* u) {
+    if (!u) return;
+    users.push_back(u);
+}
+
+User* PortalManager::login(string username, string password) {
+    for (auto u : users) {
+        if (u->getUserName() == username && u->verifyPassword(password)) {
+            return u;
+        }
+    }
+    return nullptr;
+}
+
+// ------------------------------
+//  COMPONENT MANAGEMENT
+// ------------------------------
+
+vector<Component>& PortalManager::getComponents() {
+    return components;
+}
+
+// ------------------------------
+//  ORDER MANAGEMENT
+// ------------------------------
+
+void PortalManager::addOrder(const Order &o) {
+    orders.push_back(o);
+}
+
+vector<Order>& PortalManager::getOrders() {
+    return orders;
+}
+
+// --------------------------------------------------------------
+//                     FILE PERSISTENCE
+// --------------------------------------------------------------
+
+// ===================== USERS =====================
+
+void PortalManager::saveUsers() {
+    ofstream out("users.txt");
+    if (!out) return;
+
+    for (auto *u : users) {
+        out << u->getId() << "|"
+            << u->getUserName() << "|"
+            << u->getPassword() << "|"
+            << u->getWhatsapp() << "|"
+            << u->getisAdmin()
+            << "\n";
+    }
+}
+
+void PortalManager::loadUsers() {
+    ifstream in("users.txt");
+    if (!in) return;
+
+    users.clear();
+    string line;
+
+    while (getline(in, line)) {
+        stringstream ss(line);
+        string id, username, password, whatsapp, isAdmin;
+
+        getline(ss, id, '|');
+        getline(ss, username, '|');
+        getline(ss, password, '|');
+        getline(ss, whatsapp, '|');
+        getline(ss, isAdmin, '|');
+
+        if (isAdmin == "1") {
+            users.push_back(new Admin(stoi(id), username, password, whatsapp));
+        } else {
+            users.push_back(new Customer(stoi(id), username, password, whatsapp));
+        }
+    }
+}
+
+// ===================== COMPONENTS =====================
+
+void PortalManager::saveComponents() {
+    ofstream out("components.txt");
+    if (!out) return;
+
+    for (auto &c : components) {
+        out << c.getId() << "|"
+            << c.getName() << "|"
+            << c.getDescription() << "|"
+            << c.getQuantity() << "|"
+            << c.getPrice() << "|"
+            << c.getSellerName() << "|"
+            << c.getSellerWhatsapp()
+            << "\n";
+    }
+}
+
+void PortalManager::loadComponents() {
+    ifstream in("components.txt");
+    if (!in) return;
+
+    components.clear();
+    string line;
+
+    while (getline(in, line)) {
+        stringstream ss(line);
+        string id, name, desc, qty, price, seller, phone;
+
+        getline(ss, id, '|');
+        getline(ss, name, '|');
+        getline(ss, desc, '|');
+        getline(ss, qty, '|');
+        getline(ss, price, '|');
+        getline(ss, seller, '|');
+        getline(ss, phone, '|');
+
+        components.push_back(
+            Component(stoi(id), name, desc, stoi(qty), stod(price), seller, phone)
+        );
+    }
+}
+
+// ===================== ORDERS =====================
+
+void PortalManager::saveOrders() {
+    ofstream out("orders.txt");
+    if (!out) return;
+
+    for (auto &o : orders) {
+        out << o.getId() << "|"
+            << o.getUserId() << "|"
+            << o.getCustomerWhatsapp() << "|"
+            << o.getTotal() << "\n";
+
+        for (auto &item : o.getItems()) {
+            out << item.getComponentId() << ","
+                << item.getComponentName() << ","
+                << item.getQuantity() << ","
+                << item.getPrice() << ";\n";
+        }
+
+        out << "#\n";  // end of order
+    }
+}
+
+void PortalManager::loadOrders() {
+    ifstream in("orders.txt");
+    if (!in) return;
+
+    orders.clear();
+    string line;
+    Order current;
+    vector<OrderItem> tempItems;
+
+    while (getline(in, line)) {
+
+        if (line == "#") {
+            // Finalize order
+            current.setItems(tempItems);
+            current.recalculateTotal();
+            orders.push_back(current);
+
+            tempItems.clear();
+            continue;
+        }
+
+        // Header line
+        if (line.find('|') != string::npos) {
+            stringstream ss(line);
+            string id, userId, phone, total;
+
+            getline(ss, id, '|');
+            getline(ss, userId, '|');
+            getline(ss, phone, '|');
+            getline(ss, total, '|');
+
+            current = Order();
+            current.setId(stoi(id));
+            current.setUserId(stoi(userId));
+            current.setCustomerWhatsapp(phone);
+            continue;
+        }
+
+        // Item line
+        stringstream ss(line);
+        string id, name, qty, price;
+
+        getline(ss, id, ',');
+        getline(ss, name, ',');
+        getline(ss, qty, ',');
+        getline(ss, price, ';');
+
+        tempItems.push_back(
+            OrderItem(stoi(id), name, stoi(qty), stod(price))
+        );
+    }
+}
+

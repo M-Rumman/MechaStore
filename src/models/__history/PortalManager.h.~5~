@@ -1,0 +1,60 @@
+#ifndef PORTALMANAGER_H
+#define PORTALMANAGER_H
+
+#include <vector>
+#include "User.h"
+#include "Customer.h"
+#include "Admin.h"
+#include "Component.h"
+#include "Order.h"
+using namespace std;
+
+class PortalManager {
+private:
+    vector<User*> users;
+    vector<Component> components;
+    vector<Order> orders;
+
+public:
+    PortalManager() {}
+
+    // Users
+    void registerUser(User* u);
+    User* login(string username, string password);
+
+    // Missing getter
+    vector<User*>& getUsers() { return users; }
+
+    // Components
+    vector<Component>& getComponents();
+
+    // Orders
+    void addOrder(const Order &o);
+    vector<Order>& getOrders();
+
+    // ID generators (important)
+    int generateUserId() {
+        int mx = 0;
+        for (auto u : users) mx = max(mx, u->getId());
+        return mx + 1;
+    }
+
+    int generateOrderId() {
+        int mx = 0;
+        for (auto &o : orders) mx = max(mx, o.getId());
+        return mx + 1;
+    }
+
+    // Persistence
+    void saveUsers();
+    void loadUsers();
+
+    void saveComponents();
+    void loadComponents();
+
+    void saveOrders();
+    void loadOrders();
+};
+
+#endif
+
