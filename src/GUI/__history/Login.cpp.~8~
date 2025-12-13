@@ -1,0 +1,61 @@
+#include <vcl.h>
+#pragma hdrstop
+
+#include "Login.h"
+#include "AdminDashboard.h"
+#include "CustomerDashboard.h"
+
+#include "../models/PortalManager.h"
+#include "../models/User.h"
+#include "../models/Admin.h"
+#include "../models/Customer.h"
+
+extern PortalManager store;
+
+#pragma package(smart_init)
+#pragma resource "*.dfm"
+
+TLoginForm *LoginForm;
+
+__fastcall TLoginForm::TLoginForm(TComponent* Owner)
+    : TForm(Owner)
+{
+}
+
+void __fastcall TLoginForm::btnLoginClick(TObject *Sender)
+{
+    string u = edtUser->Text.c_str();
+    string p = edtPass->Text.c_str();
+
+    User *user = store->login(u, p);  // Using pointer to backend
+
+    if (!user)
+    {
+        ShowMessage("Invalid username or password.");
+        return;
+    }
+
+    ShowMessage("Login successful!");
+
+    // Open the correct dashboard dynamically
+    if (user->getisAdmin())
+    {
+        TAdminDashboard *adminDash = new TAdminDashboard(this);
+        adminDash->SetUser(dynamic_cast<Admin*>(user));  // Pass logged-in Admin
+        adminDash->ShowModal();
+        delete adminDash;
+    }
+    else
+    {
+        TCustomerDashboard *custDash = new TCustomerDashboard(this);
+        custDash->SetUser(dynamic_cast<Customer*>(user)); // Pass logged-in Customer
+        custDash->ShowModal();
+        delete custDash;
+    }
+
+    Close(); // Close login form after opening dashboard
+}
+
+
+
+

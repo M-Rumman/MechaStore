@@ -1,4 +1,5 @@
-﻿// main.cpp
+
+                                    // main.cpp
 #include <iostream>
 #include <string>
 #include <vector>
@@ -13,7 +14,7 @@
 
 using namespace std;
 
-PortalManager store;   // global portal manager
+PortalManager store; // global portal manager
 
 // ---------------------- ADMIN SEED ----------------------
 void seedAdminIfNone() {
@@ -69,17 +70,19 @@ void showAdminMenu() {
 void browseComponents() {
     const vector<Component> &components = store.getComponents();
     cout << "\nAvailable Components:\n";
+
     if (components.empty()) {
         cout << "No components available.\n";
         return;
     }
+
     for (const auto &c : components) {
         cout << "ID: " << c.getId()
              << " | " << c.getName()
              << " | $" << c.getPrice()
              << " | Stock: " << c.getQuantity()
              << " | Seller: " << c.getSellerName()
-             << "\n    " << c.getDescription() << "\n";
+             << "\n " << c.getDescription() << "\n";
     }
 }
 
@@ -87,12 +90,19 @@ void addComponentByUser(User* u) {
     if (!u) return;
 
     string idS, name, desc, qtyS, priceS, sellerPhone;
-    cout << "ID: "; getline(cin, idS);
-    cout << "Name: "; getline(cin, name);
-    cout << "Description: "; getline(cin, desc);
-    cout << "Quantity: "; getline(cin, qtyS);
-    cout << "Price: "; getline(cin, priceS);
-    cout << "Your Whatsapp/Phone: "; getline(cin, sellerPhone);
+
+    cout << "ID: ";
+    getline(cin, idS);
+    cout << "Name: ";
+    getline(cin, name);
+    cout << "Description: ";
+    getline(cin, desc);
+    cout << "Quantity: ";
+    getline(cin, qtyS);
+    cout << "Price: ";
+    getline(cin, priceS);
+    cout << "Your Whatsapp/Phone: ";
+    getline(cin, sellerPhone);
 
     try {
         int id = stoi(idS);
@@ -113,10 +123,13 @@ void addComponentByUser(User* u) {
 // ---------------------- USER MANAGEMENT ----------------------
 void registerCustomer() {
     string username, password, whatsapp;
+
     cout << "Enter username: ";
     getline(cin, username);
+
     cout << "Enter password: ";
     getline(cin, password);
+
     cout << "Enter whatsapp (or phone): ";
     getline(cin, whatsapp);
 
@@ -131,13 +144,16 @@ void registerCustomer() {
 
 User* loginPrompt() {
     string username, password;
+
     cout << "Username: ";
     getline(cin, username);
+
     cout << "Password: ";
     getline(cin, password);
 
     User *u = store.login(username, password);
     if (!u) cout << "Login failed.\n";
+
     return u;
 }
 
@@ -154,6 +170,7 @@ void performCheckout(Customer *cust) {
     }
 
     vector<OrderItem> orderItems;
+
     for (const auto &ci : items) {
         orderItems.push_back(
             OrderItem(
@@ -180,7 +197,6 @@ void performCheckout(Customer *cust) {
     store.addOrder(order);
     store.saveComponents();
     store.saveOrders();
-
     cart.clear();
 
     cout << "Checkout complete. Order ID: " << orderId
@@ -192,18 +208,23 @@ void customerFlow(Customer *cust) {
     if (!cust) return;
 
     bool running = true;
+
     while (running) {
         showCustomerMenu();
-        string op; getline(cin, op);
+        string op;
+        getline(cin, op);
 
         if (op == "1") browseComponents();
-        else if (op == "2") addComponentByUser(cust);  // any user can add
+        else if (op == "2") addComponentByUser(cust);
         else if (op == "3") {
             browseComponents();
             cout << "Enter component id: ";
-            string idStr; getline(cin, idStr);
+            string idStr;
+            getline(cin, idStr);
+
             cout << "Enter quantity: ";
-            string qtyStr; getline(cin, qtyStr);
+            string qtyStr;
+            getline(cin, qtyStr);
 
             try {
                 int id = stoi(idStr);
@@ -220,7 +241,9 @@ void customerFlow(Customer *cust) {
                     cout << "Added to cart.\n";
                 }
             }
-            catch (...) { cout << "Invalid input.\n"; }
+            catch (...) {
+                cout << "Invalid input.\n";
+            }
         }
         else if (op == "4") {
             cust->viewCart();
@@ -236,20 +259,30 @@ void adminFlow(Admin *admin) {
     if (!admin) return;
 
     bool running = true;
+
     while (running) {
         showAdminMenu();
-        string op; getline(cin, op);
+        string op;
+        getline(cin, op);
 
         if (op == "1") browseComponents();
         else if (op == "2") {
             string idS, name, desc, qtyS, priceS, seller, sellerPhone;
-            cout << "ID: "; getline(cin, idS);
-            cout << "Name: "; getline(cin, name);
-            cout << "Description: "; getline(cin, desc);
-            cout << "Quantity: "; getline(cin, qtyS);
-            cout << "Price: "; getline(cin, priceS);
-            cout << "Seller: "; getline(cin, seller);
-            cout << "Whatsapp: "; getline(cin, sellerPhone);
+
+            cout << "ID: ";
+            getline(cin, idS);
+            cout << "Name: ";
+            getline(cin, name);
+            cout << "Description: ";
+            getline(cin, desc);
+            cout << "Quantity: ";
+            getline(cin, qtyS);
+            cout << "Price: ";
+            getline(cin, priceS);
+            cout << "Seller: ";
+            getline(cin, seller);
+            cout << "Whatsapp: ";
+            getline(cin, sellerPhone);
 
             try {
                 Component c(stoi(idS), name, desc, stoi(qtyS), stod(priceS), seller, sellerPhone);
@@ -257,27 +290,41 @@ void adminFlow(Admin *admin) {
                 store.saveComponents();
                 cout << "Component added.\n";
             }
-            catch (...) { cout << "Invalid input.\n"; }
+            catch (...) {
+                cout << "Invalid input.\n";
+            }
         }
         else if (op == "3") {
             browseComponents();
             cout << "Enter ID to update: ";
-            string idS; getline(cin, idS);
+            string idS;
+            getline(cin, idS);
 
             try {
                 int id = stoi(idS);
                 Component *found = nullptr;
+
                 for (auto &c : store.getComponents())
                     if (c.getId() == id) found = &c;
 
-                if (!found) { cout << "Not found.\n"; continue; }
+                if (!found) {
+                    cout << "Not found.\n";
+                    continue;
+                }
 
                 string newName, newPrice, newQty;
-                cout << "New name (blank = keep): "; getline(cin, newName);
-                cout << "New price (blank = keep): "; getline(cin, newPrice);
-                cout << "New qty (blank = keep): "; getline(cin, newQty);
 
-                admin->updateComponent(*found,
+                cout << "New name (blank = keep): ";
+                getline(cin, newName);
+
+                cout << "New price (blank = keep): ";
+                getline(cin, newPrice);
+
+                cout << "New qty (blank = keep): ";
+                getline(cin, newQty);
+
+                admin->updateComponent(
+                    *found,
                     newName.empty() ? found->getName() : newName,
                     newPrice.empty() ? found->getPrice() : stod(newPrice),
                     newQty.empty() ? found->getQuantity() : stoi(newQty)
@@ -286,17 +333,24 @@ void adminFlow(Admin *admin) {
                 store.saveComponents();
                 cout << "Updated.\n";
             }
-            catch (...) { cout << "Invalid.\n"; }
+            catch (...) {
+                cout << "Invalid.\n";
+            }
         }
         else if (op == "4") {
             browseComponents();
             cout << "Enter ID to delete: ";
-            string idS; getline(cin, idS);
+            string idS;
+            getline(cin, idS);
+
             try {
                 admin->deleteComponent(store.getComponents(), stoi(idS));
                 store.saveComponents();
                 cout << "Deleted if existed.\n";
-            } catch (...) { cout << "Invalid.\n"; }
+            }
+            catch (...) {
+                cout << "Invalid.\n";
+            }
         }
         else if (op == "5") admin->viewOrders(store.getOrders());
         else if (op == "6") running = false;
@@ -315,9 +369,11 @@ int main() {
     seedAdminIfNone();
 
     bool running = true;
+
     while (running) {
         showMainMenu();
-        string choice; getline(cin, choice);
+        string choice;
+        getline(cin, choice);
 
         if (choice == "1") registerCustomer();
         else if (choice == "2") {
@@ -339,4 +395,3 @@ int main() {
 
     return 0;
 }
-

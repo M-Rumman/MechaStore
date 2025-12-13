@@ -9,20 +9,9 @@
 void PortalManager::registerUser(User* u) {
     if (!u) return;
 
-    // If no users exist yet, make this user an admin
-    if (users.empty()) {
-        Admin* adminUser = new Admin(u->getId(), u->getUserName(), u->getPassword(), u->getWhatsapp());
-        users.push_back(adminUser);
-        std::cout << "Congrats! You are the first user and have been made an ADMIN.\n";
-    } else {
-        // Regular customer
-        users.push_back(u);
-    }
-
-    // Save immediately so the first admin persists
+    users.push_back(u);
     saveUsers();
 }
-
 
 User* PortalManager::login(const std::string& username, const std::string& password) {
     for (auto u : users) {
@@ -84,7 +73,15 @@ void PortalManager::saveUsers() {
 
 void PortalManager::loadUsers() {
     std::ifstream in("users.txt");
-    if (!in) return;
+
+    if (!in || in.peek() == std::ifstream::traits_type::eof()) {
+        // Create default admin ONCE
+        Admin* admin = new Admin(1, "admin", "admin123", "03000000000");
+        users.push_back(admin);
+        saveUsers();
+        return;
+    }
+
     users.clear();
     std::string line;
     while (getline(in, line)) {
@@ -95,11 +92,11 @@ void PortalManager::loadUsers() {
         getline(ss, password, '|');
         getline(ss, whatsapp, '|');
         getline(ss, isAdmin, '|');
-        if (isAdmin == "1") {
-            users.push_back(new Admin(std::stoi(id), username, password, whatsapp));
-        } else {
-            users.push_back(new Customer(std::stoi(id), username, password, whatsapp));
-        }
+
+        if (isAdmin == "1")
+            users.push_back(new Admin(stoi(id), username, password, whatsapp));
+        else
+            users.push_back(new Customer(stoi(id), username, password, whatsapp));
     }
 }
 

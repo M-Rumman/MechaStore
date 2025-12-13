@@ -1,0 +1,62 @@
+#include <vcl.h>
+#pragma hdrstop
+
+#include "Main.h"
+#include "RegisterForm.h"
+#include "Login.h"
+#include "BrowseComp.h"
+#include "../models/PortalManager.h"
+
+extern PortalManager store;
+
+#pragma package(smart_init)
+#pragma resource "*.dfm"
+
+TMainForm *MainForm;
+
+__fastcall TMainForm::TMainForm(TComponent* Owner)
+	: TForm(Owner)
+{
+	store.addComponent(Component(1, "Resistor", 0.10, 100));
+	store.addComponent(Component(2, "Capacitor", 0.25, 50));
+	store.addComponent(Component(3, "LED", 0.15, 200));
+}
+
+void __fastcall TMainForm::btnRegisterClick(TObject *Sender)
+{
+    // Create Register form dynamically
+    TRegister *regForm = new TRegister(this);
+    regForm->ShowModal();   // Blocking call until user closes the form
+    delete regForm;         // Free memory
+}
+
+void __fastcall TMainForm::btnLoginClick(TObject *Sender)
+{
+    // Create Login form dynamically
+    TLoginForm *loginForm = new TLoginForm(this);
+
+    // Pass backend reference if needed
+	loginForm->store = store;
+
+    loginForm->ShowModal();  // Blocking call
+    delete loginForm;
+}
+
+void __fastcall TMainForm::btnBrowseClick(TObject *Sender)
+{
+    // Create BrowseComponents form dynamically
+    TBrowseComponents *browseForm = new TBrowseComponents(this);
+
+    // Pass backend reference
+    browseForm->store = store;
+
+    browseForm->ShowModal();  // Blocking call
+    delete browseForm;
+}
+
+void __fastcall TMainForm::btnExitClick(TObject *Sender)
+{
+    Close();
+}
+
+

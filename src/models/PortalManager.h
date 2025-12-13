@@ -17,14 +17,19 @@ private:
     std::vector<Order> orders;
 
 public:
-    PortalManager() {}
+    PortalManager() {
+    loadUsers();
+    loadComponents();
+    loadOrders();
+}
 
     // Users
     void registerUser(User* u);
     User* login(const std::string& username, const std::string& password);
     std::vector<User*>& getUsers() { return users; }
 
-    // Components
+	// Components
+    void addComponent(const Component &c) { components.push_back(c); }
     std::vector<Component>& getComponents();
 
     // Orders
